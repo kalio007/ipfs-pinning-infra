@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ipfs-upload
+  labels:
+    app: ipfs-upload
+spec:
+  replicas: 3
+  selector:
+    matchLabels: 
+      app: ipfs-upload
+  template:
+    metadata:
+      app: ipfs-upload
+    spec:
+      containers:
+        - name: ipfs-upload
+        # CHORE: push image to ECR
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 3000
+              protocol: TCP     
